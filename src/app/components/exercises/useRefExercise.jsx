@@ -3,11 +3,11 @@ import CollapseWrapper from "../common/collapse";
 const UseRefExercise = () => {
     const blockRef = useRef();
 
-    const handleBlockStyles = () => {
+    const handelClick = () => {
         const currentRef = blockRef.current;
         currentRef.style.height = "150px";
         currentRef.style.width = "80px";
-        currentRef.textContent = "text";
+        currentRef.children[0].innerText = "text";
     };
 
     return (
@@ -22,7 +22,7 @@ const UseRefExercise = () => {
             </ul>
             <div
                 ref={blockRef}
-                className="bg-primary d-inline-flex flex-row justify-content-center align-items-center rounded"
+                className="bg-primary d-flex flex-row justify-content-center align-items-center rounded"
                 style={{
                     height: 40,
                     width: 60,
@@ -31,11 +31,8 @@ const UseRefExercise = () => {
             >
                 <small>Блок</small>
             </div>
-            <button
-                className="btn btn-secondary ms-2"
-                onClick={handleBlockStyles}
-            >
-                Изменть стиль
+            <button className="btn btn-secondary my-4" onClick={handelClick}>
+                Trigger action
             </button>
         </CollapseWrapper>
     );

@@ -4,35 +4,35 @@ import CollapseWrapper from "../common/collapse";
 import Divider from "../common/divider";
 import PropTypes from "prop-types";
 
-const withLogin = (Component) => (props) => {
-    const isAuth = localStorage.getItem("user");
-    console.log(isAuth);
-    const onLogIn = () => {
-        localStorage.setItem("user", "user");
+// HOC Component
+const withFunctionals = (Component) => (props) => {
+    const handleLogin = () => {
+        localStorage.setItem("auth", "token");
     };
-
-    const onLogOut = () => {
-        localStorage.removeItem("user", "user");
+    const handleLogout = () => {
+        localStorage.removeItem("auth");
     };
+    const isAuth = localStorage.getItem("auth");
 
     return (
         <CardWrapper>
             <Component
                 isAuth={isAuth}
-                onLogIn={onLogIn}
-                onLogOut={onLogOut}
+                onLogin={handleLogin}
+                onLogOut={handleLogout}
                 {...props}
             />
         </CardWrapper>
     );
 };
 
-const SimpleComponent = ({ isAuth, onLogIn, onLogOut }) => {
+// Simple Component
+const SimpleComponent = ({ isAuth, onLogin, onLogOut }) => {
     const [isLogin, setIsLogin] = useState(isAuth);
     console.log(isAuth);
     console.log(isLogin);
-    const handleLogIn = () => {
-        onLogIn();
+    const handleLogin = () => {
+        onLogin();
         setIsLogin(isAuth);
     };
 
@@ -47,7 +47,7 @@ const SimpleComponent = ({ isAuth, onLogIn, onLogOut }) => {
                     Выйти из системы
                 </button>
             ) : (
-                <button className="btn btn-primary" onClick={handleLogIn}>
+                <button className="btn btn-primary" onClick={handleLogin}>
                     Войти
                 </button>
             )}
@@ -58,11 +58,11 @@ const SimpleComponent = ({ isAuth, onLogIn, onLogOut }) => {
 SimpleComponent.propTypes = {
     isAuth: PropTypes.string,
     onLogOut: PropTypes.func,
-    onLogIn: PropTypes.func
+    onLogin: PropTypes.func
 };
+const ComponentWithAuth = withFunctionals(SimpleComponent);
 
 const HocExercise = () => {
-    const ComponentWithAuth = withLogin(SimpleComponent);
     return (
         <CollapseWrapper title="Упражнение">
             <p className="mt-3">

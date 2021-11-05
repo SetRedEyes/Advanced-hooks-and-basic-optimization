@@ -3,13 +3,14 @@ import CollapseWrapper from "../common/collapse";
 import PropTypes from "prop-types";
 
 const ComponentList = ({ children }) => {
-    console.log("children", children);
-    return React.Children.map(children, (child, index) => {
-        const config = {
+    const arrayOfChildren = React.Children.toArray(children);
+    console.log(arrayOfChildren);
+
+    return React.Children.map(arrayOfChildren, (child) => {
+        return React.cloneElement(child, {
             ...child.props,
-            text: `${index + 1}.${child.props.text}`
-        };
-        return React.cloneElement(child, config);
+            id: +child.key.replace(".", "") + 1
+        });
     });
 };
 ComponentList.propTypes = {
@@ -31,20 +32,20 @@ const ChildrenExercise = () => {
                 <code>React.Children.toArray</code>
             </p>
             <ComponentList>
-                <Component text="Компонент списка" />
-                <Component text="Компонент списка" />
-                <Component text="Компонент списка" />
+                <Component />
+                <Component />
+                <Component />
             </ComponentList>
         </CollapseWrapper>
     );
 };
 
-const Component = ({ text }) => {
-    return <div>{text}</div>;
+const Component = ({ id }) => {
+    return <div>{id} Компонент списка</div>;
 };
 
 Component.propTypes = {
-    text: PropTypes.string
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
 
 export default ChildrenExercise;
